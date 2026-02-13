@@ -33,30 +33,38 @@ async function getList() {
     }
     return _cache;
   } catch (e) {
-    console.error('SKU listesi hatası:', e.message);
+    console.error('⚠️ SKU listesi hatası:', e.message);
     return [];
   }
 }
 
 async function getAsText() {
-  const list = await getList();
-  return list.map(p => `${p.sku_code}: ${p.product_name} (${p.unit}) [${p.aliases.join(', ')}]`).join('\n');
+  try {
+    const list = await getList();
+    return list.map(p => `${p.sku_code}: ${p.product_name} (${p.unit}) [${p.aliases.join(', ')}]`).join('\n');
+  } catch (e) {
+    console.error('⚠️ SKU text hatası:', e.message);
+    return '';
+  }
 }
 
 async function findMatch(productName) {
-  const list = await getList();
-  const search = productName.toLowerCase();
-  // Tam eşleşme
-  for (const sku of list) {
-    if (sku.product_name.toLowerCase() === search) return sku;
-  }
-  // Alias eşleşme
-  for (const sku of list) {
-    for (const alias of sku.aliases) {
-      if (search.includes(alias) || alias.includes(search)) return sku;
+  try {
+    const list = await getList();
+    const search = productName.toLowerCase();
+    for (const sku of list) {
+      if (sku.product_name.toLowerCase() === search) return sku;
     }
+    for (const sku of list) {
+      for (const alias of sku.aliases) {
+        if (search.includes(alias) || alias.includes(search)) return sku;
+      }
+    }
+    return null;
+  } catch (e) {
+    console.error('⚠️ SKU match hatası:', e.message);
+    return null;
   }
-  return null;
 }
 
 module.exports = { getList, getAsText, findMatch };
