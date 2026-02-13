@@ -12,3 +12,7 @@ Rules:
 - Do NOT scan entire repository.
 - Show minimal diff when editing.
 - No refactoring unless requested.
+  
+## Claude Instructions (Token Saver)
+- Default short responses
+- Ask confirmation before large outputs
