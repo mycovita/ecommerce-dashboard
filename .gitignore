@@ -1,5 +1,64 @@
+# ================================
+# DEPENDENCIES
+# ================================
 node_modules/
-.env
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ================================
+# BUILD OUTPUTS
+# ================================
+dist/
+build/
+.next/
+out/
+.cache/
+.serverless/
+
+# ================================
+# LOGS & RUNTIME DATA
+# ================================
 *.log
+npm-debug.log*
+yarn-debug.log*
+logs/
+data/*.json
+temp/
+tmp/
+
+# ================================
+# MEDIA / ASSETS
+# ================================
+public/images/
+public/uploads/
+assets/media/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.mp4
+
+# ================================
+# ENVIRONMENT & OS
+# ================================
+.env
+.env.*
 .DS_Store
-gmail-key.json
+
+# ================================
+# IDE
+# ================================
+.vscode/
+.idea/
+
+# ================================
+# TESTS & DOCS (OPTIONAL)
+# ================================
+tests/
+__tests__/
+*.test.js
+*.spec.js
+docs/
