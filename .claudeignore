@@ -1,20 +1,64 @@
-# 1. EN KRİTİK TASARRUF (Binlerce satır gereksiz veri)
+# ================================
+# DEPENDENCIES
+# ================================
+node_modules/
 package-lock.json
 yarn.lock
-node_modules/
+pnpm-lock.yaml
 
-# 2. SADECE ÇALIŞIRKEN LAZIM OLMAYANLAR
-.git/
-Dockerfile
-.env.example
-README.md
+# ================================
+# BUILD OUTPUTS
+# ================================
+dist/
+build/
+.next/
+out/
+.cache/
+.serverless/
 
-# 3. TEST VE LOG DOSYALARI
-# Test-gmail.js gibi dosyalar kod yazarken Claude'un kafasını karıştırabilir
-test-gmail.js
+# ================================
+# LOGS & RUNTIME DATA
+# ================================
 *.log
 npm-debug.log*
+yarn-debug.log*
+logs/
+data/*.json
+temp/
+tmp/
 
-# 4. STATİK DOSYALAR (Frontend çalışmıyorsan kapatabilirsin)
-# Eğer sadece backend mantığına (api.js, services/) odaklanıyorsan:
-public/
+# ================================
+# MEDIA / ASSETS
+# ================================
+public/images/
+public/uploads/
+assets/media/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.mp4
+
+# ================================
+# ENVIRONMENT & OS
+# ================================
+.env
+.env.*
+.DS_Store
+
+# ================================
+# IDE
+# ================================
+.vscode/
+.idea/
+
+# ================================
+# TESTS & DOCS (OPTIONAL)
+# ================================
+tests/
+__tests__/
+*.test.js
+*.spec.js
+docs/
