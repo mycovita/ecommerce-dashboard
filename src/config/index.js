@@ -10,7 +10,7 @@ require('dotenv').config();
 const config = {
   // Google Cloud (env'den)
   gcpProjectId: process.env.GCP_PROJECT_ID,
-  gcpLocation: process.env.GCP_LOCATION || 'us-central1',
+  gcpLocation: process.env.GCP_LOCATION || 'europe-west3',
   geminiModel: process.env.GEMINI_MODEL || 'gemini-2.0-flash-001',
 
   // Google Drive (env'den)
