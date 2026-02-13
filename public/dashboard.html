@@ -561,17 +561,20 @@ function renderTodayStats(t) {
 ═══════════════════════════════════════════════════════════════ -->
 <script>
 function loadDashboard() {
-  google.script.run.withSuccessHandler(function(data) {
-    if (data) {
-      renderWeather(data.weather);
-      renderMarketplace(data.marketplace);
-      renderTopProducts(data.top_products);
-      renderLogs(data.recent_logs);
-      renderTodayStats(data.today);
-    }
-  }).withFailureHandler(function(err) {
-    console.error('Dashboard yükleme hatası:', err);
-  }).getDashboardDataForWeb();
+  fetch('/api/dashboard')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data) {
+        renderWeather(data.weather);
+        renderMarketplace(data.marketplace);
+        renderTopProducts(data.top_products);
+        renderLogs(data.recent_logs);
+        renderTodayStats(data.today);
+      }
+    })
+    .catch(function(err) {
+      console.error('Dashboard yükleme hatası:', err);
+    });
 }
 
 function runAction(action) {
@@ -581,18 +584,21 @@ function runAction(action) {
   btn.disabled = true;
   btn.innerHTML = '<div class="btn-spinner"></div><span>Çalışıyor...</span>';
 
-  google.script.run.withSuccessHandler(function(result) {
-    btn.disabled = false;
-    btn.innerHTML = orig;
-    if (result && result.logs) {
-      result.logs.forEach(log => addLog('BİLGİ', log));
-    }
-    loadDashboard();
-  }).withFailureHandler(function(err) {
-    btn.disabled = false;
-    btn.innerHTML = orig;
-    addLog('HATA', err.message);
-  }).runActionForWeb(action);
+  fetch('/api/' + action, { method: 'POST' })
+    .then(function(res) { return res.json(); })
+    .then(function(result) {
+      btn.disabled = false;
+      btn.innerHTML = orig;
+      if (result && result.logs) {
+        result.logs.forEach(function(log) { addLog('BİLGİ', log); });
+      }
+      loadDashboard();
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.innerHTML = orig;
+      addLog('HATA', err.message);
+    });
 }
 
 function addLog(status, message) {
@@ -619,3 +625,4 @@ setInterval(loadDashboard, 300000);
 
 </body>
 </html>
+
