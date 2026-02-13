@@ -9,21 +9,16 @@ const { getSheets } = require('../config/google-auth');
 const LogService = {
   async write(fileName, status, detail) {
     const ts = new Date().toLocaleString('tr-TR', { timeZone: config.timezone });
-    const safe = { fileName: fileName || 'UNKNOWN', status: status || 'INFO', detail: detail || '-' };
+    const safe = { 
+      fileName: String(fileName || 'UNKNOWN').substring(0, 200), 
+      status: String(status || 'INFO').substring(0, 50), 
+      detail: String(detail || '-').substring(0, 500)
+    };
 
     console.log(`[${ts}] [${safe.status}] ${safe.fileName} → ${safe.detail}`);
 
     try {
       const sheets = await getSheets();
-      // Satır ekle (en üste)
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: config.dashboardSheetId,
-        range: 'LOGS!A1',
-        valueInputOption: 'USER_ENTERED',
-        requestBody: { values: [] }
-      });
-
-      // Insert row after header
       await sheets.spreadsheets.batchUpdate({
         spreadsheetId: config.dashboardSheetId,
         requestBody: {
@@ -38,7 +33,7 @@ const LogService = {
       await sheets.spreadsheets.values.update({
         spreadsheetId: config.dashboardSheetId,
         range: 'LOGS!A2:D2',
-        valueInputOption: 'USER_ENTERED',
+        valueInputOption: 'RAW',
         requestBody: { values: [[ts, safe.fileName, safe.status, safe.detail]] }
       });
     } catch (e) {
@@ -67,9 +62,15 @@ const LogService = {
         spreadsheetId: config.dashboardSheetId,
         range: `LOGS!A2:D${count + 1}`
       });
-      return (res.data.values || []).map(row => ({
-        timestamp: row[0], fileName: row[1], status: row[2], detail: row[3]
-      }));
+      const rows = res.data.values || [];
+      return rows
+        .filter(row => row && row.length >= 4)
+        .map(row => ({
+          timestamp: row[0], 
+          fileName: row[1], 
+          status: row[2], 
+          detail: row[3]
+        }));
     } catch { return []; }
   }
 };
