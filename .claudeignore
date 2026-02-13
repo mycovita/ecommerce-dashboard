@@ -1,1 +1,20 @@
+# 1. EN KRİTİK TASARRUF (Binlerce satır gereksiz veri)
+package-lock.json
+yarn.lock
+node_modules/
 
+# 2. SADECE ÇALIŞIRKEN LAZIM OLMAYANLAR
+.git/
+Dockerfile
+.env.example
+README.md
+
+# 3. TEST VE LOG DOSYALARI
+# Test-gmail.js gibi dosyalar kod yazarken Claude'un kafasını karıştırabilir
+test-gmail.js
+*.log
+npm-debug.log*
+
+# 4. STATİK DOSYALAR (Frontend çalışmıyorsan kapatabilirsin)
+# Eğer sadece backend mantığına (api.js, services/) odaklanıyorsan:
+public/
