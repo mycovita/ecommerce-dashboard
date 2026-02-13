@@ -6,11 +6,8 @@
   <title>🍄 MYCOVITA OS</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 1: CSS - GENEL STILLER
-═══════════════════════════════════════════════════════════════ -->
 <style>
-/* 1.1 RESET & VARIABLES */
+/* RESET & VARIABLES */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
   --bg-primary: #0d0d0d;
@@ -30,272 +27,179 @@ body {
   font-family: 'Inter', sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
 }
 
-/* 1.2 HEADER */
+/* HEADER */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  background: var(--bg-secondary);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 20px; background: var(--bg-secondary);
   border-bottom: 1px solid var(--bg-tertiary);
-  flex-shrink: 0;
 }
-.logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 700; }
-.logo-icon { font-size: 28px; }
+.logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+.logo-icon { font-size: 22px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.drive-link {
+  display: flex; align-items: center; gap: 6px;
+  text-decoration: none; color: var(--text-secondary);
+  font-size: 12px; padding: 4px 10px; border-radius: 6px;
+  background: var(--bg-tertiary); transition: all 0.2s;
+}
+.drive-link:hover { background: var(--accent-blue); color: white; }
+.drive-link svg { width: 16px; height: 16px; }
 .status-badge {
   display: flex; align-items: center; gap: 8px;
-  padding: 6px 14px; background: var(--bg-tertiary);
-  border-radius: 20px; font-size: 13px;
+  font-size: 12px; color: var(--text-secondary);
 }
-.status-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--accent-green); animation: pulse 2s infinite;
-}
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-.last-sync { color: var(--text-secondary); font-size: 11px; margin-left: 8px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: pulse 2s infinite; }
+.last-sync { font-weight: 700; font-size: 14px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-/* 1.3 MAIN GRID */
+/* GRID */
 .main-container {
-  flex: 1;
+  flex: 1; padding: 12px; overflow: auto;
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr;
-  grid-template-rows: 1fr 1.2fr auto;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  grid-template-rows: auto 1fr auto;
   gap: 12px;
-  padding: 12px;
-  overflow: hidden;
 }
 
-/* 1.4 WIDGET BASE */
+/* WIDGETS */
 .widget {
-  background: var(--bg-secondary);
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
+  background: var(--bg-secondary); border-radius: 12px;
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--bg-tertiary);
 }
 .widget-header { height: 3px; flex-shrink: 0; }
 .widget-content {
-  flex: 1;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-height: 0;
+  padding: 12px; flex: 1; display: flex;
+  flex-direction: column; gap: 8px; overflow: auto;
 }
 .widget-title {
-  font-size: 11px; font-weight: 600; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; flex-shrink: 0;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-secondary);
 }
-</style>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 2: CSS - WEATHER WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
+/* WEATHER */
 .weather-header { background: var(--accent-blue); }
-.weather-cards { display: flex; gap: 8px; flex: 1; min-height: 0; }
+.weather-cards { display: flex; gap: 8px; flex: 1; }
 .weather-card {
-  flex: 1; background: var(--bg-tertiary); border-radius: 8px;
-  padding: 10px; text-align: center; position: relative; overflow: hidden;
-  display: flex; flex-direction: column; justify-content: center;
+  flex: 1; background: var(--bg-tertiary); border-radius: 8px; padding: 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
 }
 .weather-location { font-size: 12px; font-weight: 600; }
-.weather-temp { font-size: 28px; font-weight: 700; }
+.weather-icon { font-size: 28px; }
+.weather-temp { font-size: 24px; font-weight: 700; }
 .weather-desc { font-size: 10px; color: var(--text-secondary); }
-.weather-icon { font-size: 32px; margin: 4px 0; }
-.weather-extra { 
-  display: flex; 
-  justify-content: center; 
-  gap: 10px; 
-  font-size: 9px; 
-  color: var(--text-secondary); 
-  margin-top: 4px; 
+.weather-details { font-size: 9px; color: var(--text-secondary); display: flex; gap: 8px; }
+.weather-forecast { display: flex; gap: 4px; margin-top: 4px; }
+.forecast-day {
+  background: rgba(255,255,255,0.05); border-radius: 4px; padding: 3px 5px;
+  font-size: 8px; text-align: center; flex: 1;
 }
+.forecast-icon { font-size: 12px; }
 
-/* Weather Animations */
-.weather-animation { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.rain-drop {
-  position: absolute; width: 2px; height: 12px;
-  background: linear-gradient(transparent, rgba(59, 130, 246, 0.6));
-  animation: rain 0.7s linear infinite;
-}
-@keyframes rain { 0% { transform: translateY(-15px); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(80px); opacity: 0; } }
-.snow-flake { position: absolute; color: white; font-size: 10px; animation: snow 2.5s linear infinite; opacity: 0.8; }
-@keyframes snow { 0% { transform: translateY(-10px) rotate(0deg); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(80px) rotate(360deg); opacity: 0; } }
-.sun-ray {
-  position: absolute; top: 5px; right: 5px; width: 30px; height: 30px;
-  background: radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, transparent 70%);
-  border-radius: 50%; animation: sun-pulse 2s ease-in-out infinite;
-}
-@keyframes sun-pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
-</style>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 3: CSS - CLOCK WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
-.clock-header { background: var(--text-secondary); }
-.clock-container { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; }
-.analog-clock {
-  width: 130px; height: 130px; border: 3px solid var(--text-secondary);
-  border-radius: 50%; position: relative; background: var(--bg-tertiary);
-}
-.clock-number { position: absolute; font-size: 11px; font-weight: 600; color: var(--text-secondary); }
-.clock-hand { position: absolute; bottom: 50%; left: 50%; transform-origin: bottom center; border-radius: 3px; }
-.hour-hand { width: 3px; height: 35px; background: var(--text-primary); margin-left: -1.5px; }
-.minute-hand { width: 2px; height: 48px; background: var(--text-primary); margin-left: -1px; }
-.second-hand { width: 1px; height: 52px; background: var(--accent-red); margin-left: -0.5px; }
-.clock-center {
-  position: absolute; top: 50%; left: 50%; width: 8px; height: 8px;
-  background: var(--accent-red); border-radius: 50%; transform: translate(-50%, -50%);
-}
-.digital-date { margin-top: 10px; font-size: 12px; color: var(--text-secondary); }
-</style>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 4: CSS - MARKETPLACE WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
-.marketplace-header { background: var(--accent-green); }
-.marketplace-content { flex: 1; display: flex; flex-direction: column; min-height: 0; }
-.marketplace-bars { flex: 1; overflow-y: auto; min-height: 0; }
-.marketplace-row { display: flex; align-items: center; margin-bottom: 8px; }
+/* MARKETPLACE */
+.marketplace-header { background: var(--accent-orange); }
+.marketplace-content { justify-content: space-between; }
+.marketplace-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
 .marketplace-icon {
-  width: 20px; height: 20px; border-radius: 4px; margin-right: 8px;
-  display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
 }
 .mp-trendyol { background: #f27a1a; }
 .mp-hepsiburada { background: #ff6000; }
 .mp-amazon { background: #ff9900; }
-.mp-mycovita { background: #22c55e; }
-.marketplace-name { width: 80px; font-size: 12px; font-weight: 500; flex-shrink: 0; }
-.marketplace-bar-container { flex: 1; height: 18px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden; margin: 0 8px; }
-.marketplace-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-green), #4ade80); border-radius: 4px; transition: width 0.5s ease; }
-.marketplace-stats { text-align: right; min-width: 90px; flex-shrink: 0; }
-.marketplace-count { font-size: 14px; font-weight: 600; }
-.marketplace-revenue { font-size: 10px; color: var(--text-secondary); }
-.marketplace-total {
-  display: flex; justify-content: space-between; padding-top: 10px;
-  border-top: 1px solid var(--bg-tertiary); margin-top: 8px; flex-shrink: 0;
-}
-.total-label { color: var(--text-secondary); font-size: 12px; }
-.total-value { font-size: 14px; font-weight: 700; }
-.total-usd { color: var(--accent-green); font-size: 11px; }
-</style>
+.mp-mycovita { background: var(--accent-green); }
+.marketplace-name { font-size: 12px; width: 80px; }
+.marketplace-bar-container { flex: 1; height: 6px; background: var(--bg-tertiary); border-radius: 3px; }
+.marketplace-bar-fill { height: 100%; background: var(--accent-orange); border-radius: 3px; transition: width 0.5s; }
+.marketplace-stats { display: flex; flex-direction: column; align-items: flex-end; }
+.marketplace-count { font-size: 12px; font-weight: 600; }
+.marketplace-revenue { font-size: 9px; color: var(--text-secondary); }
+.marketplace-total { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--bg-tertiary); padding-top: 6px; margin-top: auto; }
+.total-label { font-size: 10px; font-weight: 600; color: var(--text-secondary); }
+.total-value { font-size: 13px; font-weight: 700; color: var(--accent-green); }
+.total-usd { font-size: 10px; color: var(--text-secondary); margin-left: 6px; }
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 5: CSS - TERMINAL WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
-.terminal-header { background: var(--terminal-green); }
+/* TERMINAL */
 .terminal { grid-column: span 2; }
+.terminal-header { background: var(--terminal-green); }
 .terminal-box {
-  flex: 1; background: #0a0a0a; border-radius: 6px; padding: 10px;
-  overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  min-height: 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  flex: 1; overflow-y: auto; max-height: 250px;
 }
-.terminal-box::-webkit-scrollbar { width: 6px; }
-.terminal-box::-webkit-scrollbar-track { background: var(--bg-tertiary); }
-.terminal-box::-webkit-scrollbar-thumb { background: var(--text-secondary); border-radius: 3px; }
-.log-line { padding: 3px 0; display: flex; gap: 10px; }
-.log-time { color: var(--text-secondary); min-width: 120px; font-size: 10px; }
-.log-status { min-width: 70px; font-weight: 600; font-size: 10px; }
+.log-line { display: flex; gap: 8px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.log-time { color: var(--text-secondary); min-width: 130px; font-size: 10px; }
+.log-status { font-weight: 600; min-width: 70px; font-size: 10px; }
 .log-status.success { color: var(--accent-green); }
 .log-status.error { color: var(--accent-red); }
-.log-status.warning { color: #eab308; }
 .log-status.info { color: var(--accent-blue); }
-.log-status.new { color: var(--accent-purple); }
-.log-message { color: var(--terminal-green); flex: 1; font-size: 10px; }
-</style>
+.log-status.new { color: var(--accent-orange); }
+.log-message { color: var(--text-secondary); font-size: 10px; }
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 6: CSS - TOP PRODUCTS WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
-.products-header { background: var(--accent-orange); }
-.products-list { flex: 1; overflow-y: auto; min-height: 0; }
-.product-item {
-  display: flex; align-items: center; padding: 8px;
-  background: var(--bg-tertiary); border-radius: 6px; margin-bottom: 6px;
-}
+/* TOP PRODUCTS */
+.products-header { background: var(--accent-purple); }
+.product-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
 .product-rank {
-  width: 22px; height: 22px; background: var(--accent-orange); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 11px; margin-right: 10px; flex-shrink: 0;
+  width: 22px; height: 22px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 10px;
+  font-weight: 700; background: var(--bg-tertiary); color: var(--text-secondary);
 }
 .product-rank.gold { background: #fbbf24; color: #000; }
 .product-rank.silver { background: #9ca3af; color: #000; }
-.product-rank.bronze { background: #cd7f32; }
-.product-info { flex: 1; min-width: 0; }
-.product-name { font-size: 12px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.product-bar { height: 4px; background: var(--bg-primary); border-radius: 2px; margin-top: 4px; overflow: hidden; }
-.product-bar-fill { height: 100%; background: var(--accent-orange); border-radius: 2px; }
-.product-qty { font-size: 16px; font-weight: 700; margin-left: 12px; flex-shrink: 0; }
-</style>
+.product-rank.bronze { background: #d97706; color: #000; }
+.product-info { flex: 1; }
+.product-name { font-size: 11px; font-weight: 500; }
+.product-bar { height: 3px; background: var(--bg-tertiary); border-radius: 2px; margin-top: 3px; }
+.product-bar-fill { height: 100%; background: var(--accent-purple); border-radius: 2px; }
+.product-qty { font-size: 13px; font-weight: 700; }
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 7: CSS - CONTROL PANEL WIDGET
-═══════════════════════════════════════════════════════════════ -->
-<style>
-.control-panel { grid-column: span 3; }
-.control-header { background: var(--accent-red); }
-.control-content { display: flex; flex-direction: column; gap: 12px; }
-.control-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
-.control-btn {
-  flex: 1; min-width: 150px; padding: 12px 16px; border: none; border-radius: 6px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+/* STATUS BAR */
+.status-bar {
+  grid-column: span 3;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
 }
-.control-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-.control-btn:active { transform: translateY(0); }
-.control-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.btn-primary { background: var(--accent-green); color: #000; }
-.btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); }
-.btn-icon { font-size: 16px; }
-.btn-spinner { width: 16px; height: 16px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+.stat-card {
+  background: var(--bg-tertiary); border-radius: 8px; padding: 10px;
+  text-align: center;
+}
+.stat-value { font-size: 22px; font-weight: 700; }
+.stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
 
-.today-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.today-stat { background: var(--bg-tertiary); padding: 10px; border-radius: 6px; text-align: center; }
-.today-stat-value { font-size: 20px; font-weight: 700; }
-.today-stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
-</style>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 8: CSS - RESPONSIVE
-═══════════════════════════════════════════════════════════════ -->
-<style>
+/* RESPONSIVE */
 @media (max-width: 1200px) {
   .main-container { grid-template-columns: 1fr 1fr; }
-  .terminal, .control-panel { grid-column: span 2; }
+  .terminal, .status-bar { grid-column: span 2; }
 }
 @media (max-width: 768px) {
   .main-container { grid-template-columns: 1fr; grid-template-rows: auto; }
-  .terminal, .control-panel { grid-column: span 1; }
-  .weather-cards { flex-direction: column; }
+  .terminal, .status-bar { grid-column: span 1; }
 }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 2px; }
 </style>
 </head>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 9: HTML - SAYFA YAPISI
-═══════════════════════════════════════════════════════════════ -->
 <body>
   <header class="header">
     <div class="logo">
       <span class="logo-icon">🍄</span>
       <span>MYCOVITA OS</span>
     </div>
-    <div class="status-badge">
-      <div class="status-dot"></div>
-      <span>Çevrimiçi</span>
-      <span class="last-sync" id="lastSync">--:--:--</span>
+    <div class="header-right">
+      <a href="https://drive.google.com/drive/folders/1UV05t1UA4_eNB-ZhEgvQZp80ILmeKdsy" target="_blank" class="drive-link">
+        <svg viewBox="0 0 87.3 78" fill="currentColor"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H1.05c0 1.6.4 3.15 1.2 4.55l4.35 9.3z"/><path d="M43.65 25.15L29.9 1.35c-1.35.8-2.5 1.9-3.3 3.3L1.2 52.7c-.8 1.4-1.2 2.95-1.2 4.55h27.5l16.15-32.1z"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 57.25c.8-1.4 1.2-2.95 1.2-4.55H59.85L43.65 25.15 29.9 52.7h27.5l16.15 24.1z"/></svg>
+      </a>
+      <div class="status-badge">
+        <div class="status-dot"></div>
+        <span>Çevrimiçi</span>
+        <span class="last-sync" id="lastSync">--:--:--</span>
+      </div>
     </div>
   </header>
 
@@ -307,27 +211,6 @@ body {
         <div class="widget-title">🌤️ Hava Durumu</div>
         <div class="weather-cards" id="weatherCards">
           <div class="weather-card"><div class="weather-location">Yükleniyor...</div><div class="weather-icon">⏳</div><div class="weather-temp">--°</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CLOCK -->
-    <div class="widget">
-      <div class="widget-header clock-header"></div>
-      <div class="widget-content">
-        <div class="widget-title">🕐 Saat</div>
-        <div class="clock-container">
-          <div class="analog-clock">
-            <div class="clock-number" style="top:8px;left:50%;transform:translateX(-50%);">12</div>
-            <div class="clock-number" style="top:50%;right:8px;transform:translateY(-50%);">3</div>
-            <div class="clock-number" style="bottom:8px;left:50%;transform:translateX(-50%);">6</div>
-            <div class="clock-number" style="top:50%;left:8px;transform:translateY(-50%);">9</div>
-            <div class="clock-hand hour-hand" id="hourHand"></div>
-            <div class="clock-hand minute-hand" id="minuteHand"></div>
-            <div class="clock-hand second-hand" id="secondHand"></div>
-            <div class="clock-center"></div>
-          </div>
-          <div class="digital-date" id="digitalDate">--</div>
         </div>
       </div>
     </div>
@@ -348,17 +231,6 @@ body {
       </div>
     </div>
 
-    <!-- TERMINAL -->
-    <div class="widget terminal">
-      <div class="widget-header terminal-header"></div>
-      <div class="widget-content">
-        <div class="widget-title">💻 Terminal</div>
-        <div class="terminal-box" id="terminalContent">
-          <div class="log-line"><span class="log-time">--:--:--</span><span class="log-status info">BAŞLATILIYOR</span><span class="log-message">Sistem yükleniyor...</span></div>
-        </div>
-      </div>
-    </div>
-
     <!-- TOP PRODUCTS -->
     <div class="widget">
       <div class="widget-header products-header"></div>
@@ -370,111 +242,71 @@ body {
       </div>
     </div>
 
-    <!-- CONTROL PANEL -->
-    <div class="widget control-panel">
-      <div class="widget-header control-header"></div>
-      <div class="widget-content control-content">
-        <div class="widget-title">🎛️ Kontrol Paneli</div>
-        <div class="control-buttons">
-          <button class="control-btn btn-primary" id="btnRunAll" onclick="runAction('run')"><span class="btn-icon">▶️</span><span>Sistemi Çalıştır</span></button>
-          <button class="control-btn btn-secondary" id="btnGmail" onclick="runAction('gmail')"><span class="btn-icon">📧</span><span>Gmail Tara</span></button>
-          <button class="control-btn btn-secondary" id="btnDrive" onclick="runAction('drive')"><span class="btn-icon">📁</span><span>Drive İşle</span></button>
-          <button class="control-btn btn-secondary" onclick="loadDashboard()"><span class="btn-icon">🔄</span><span>Yenile</span></button>
-        </div>
-        <div class="today-stats">
-          <div class="today-stat"><div class="today-stat-value" id="todayOrders">0</div><div class="today-stat-label">Bugün Sipariş</div></div>
-          <div class="today-stat"><div class="today-stat-value" id="todayFiles">0</div><div class="today-stat-label">Dosya İşlendi</div></div>
-          <div class="today-stat"><div class="today-stat-value" id="todayMails">0</div><div class="today-stat-label">Mail</div></div>
-          <div class="today-stat"><div class="today-stat-value" id="todayErrors" style="color:var(--accent-red)">0</div><div class="today-stat-label">Hata</div></div>
+    <!-- TERMINAL -->
+    <div class="widget terminal">
+      <div class="widget-header terminal-header"></div>
+      <div class="widget-content">
+        <div class="widget-title">💻 Terminal</div>
+        <div class="terminal-box" id="terminalContent">
+          <div class="log-line"><span class="log-time">--:--:--</span><span class="log-status info">BAŞLATILIYOR</span><span class="log-message">Sistem yükleniyor...</span></div>
         </div>
       </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <div class="stat-card"><div class="stat-value" id="todayOrders">0</div><div class="stat-label">Bugün Sipariş</div></div>
+      <div class="stat-card"><div class="stat-value" id="todayFiles">0</div><div class="stat-label">Dosya İşlendi</div></div>
+      <div class="stat-card"><div class="stat-value" id="todayMails">0</div><div class="stat-label">Mail</div></div>
+      <div class="stat-card"><div class="stat-value" id="todayErrors" style="color:var(--accent-red)">0</div><div class="stat-label">Hata</div></div>
     </div>
   </main>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 10: JS - CLOCK
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - WEATHER ANIMATIONS -->
 <script>
-function updateClock() {
-  const now = new Date();
-  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
-  document.getElementById('hourHand').style.transform = `rotate(${(h % 12) * 30 + m * 0.5}deg)`;
-  document.getElementById('minuteHand').style.transform = `rotate(${m * 6}deg)`;
-  document.getElementById('secondHand').style.transform = `rotate(${s * 6}deg)`;
-  document.getElementById('digitalDate').textContent = now.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  document.getElementById('lastSync').textContent = now.toLocaleTimeString('tr-TR');
-}
-setInterval(updateClock, 1000);
-updateClock();
-</script>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 11: JS - WEATHER ANIMATIONS
-═══════════════════════════════════════════════════════════════ -->
-<script>
-function createWeatherAnimation(el, main) {
+function createSnow(el) {
   el.innerHTML = '';
-  if (main === 'Rain' || main === 'Drizzle') {
-    for (let i = 0; i < 15; i++) {
-      const d = document.createElement('div');
-      d.className = 'rain-drop';
-      d.style.left = Math.random() * 100 + '%';
-      d.style.animationDelay = Math.random() + 's';
-      el.appendChild(d);
-    }
-  } else if (main === 'Snow') {
-    for (let i = 0; i < 10; i++) {
-      const f = document.createElement('div');
-      f.className = 'snow-flake';
-      f.textContent = '❄';
-      f.style.left = Math.random() * 100 + '%';
-      f.style.animationDelay = Math.random() * 2 + 's';
-      el.appendChild(f);
-    }
-  } else if (main === 'Clear') {
-    const s = document.createElement('div');
-    s.className = 'sun-ray';
-    el.appendChild(s);
+  for (let i = 0; i < 12; i++) {
+    const f = document.createElement('div');
+    f.style.cssText = 'position:absolute;color:white;font-size:' + (6+Math.random()*8) + 'px;left:' + Math.random()*100 + '%;top:-10px;animation:snowFall ' + (2+Math.random()*3) + 's linear infinite;animation-delay:' + Math.random()*3 + 's;opacity:' + (0.4+Math.random()*0.6);
+    f.textContent = '❄';
+    el.appendChild(f);
   }
 }
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 12: JS - RENDER WEATHER
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - RENDER WEATHER -->
 <script>
 function renderWeather(data) {
   const c = document.getElementById('weatherCards');
-  if (!data || !data.length) { 
-    c.innerHTML = '<div class="weather-card"><div class="weather-location">Veri yok</div><div class="weather-temp">--°</div></div>'; 
-    return; 
+  if (!data || !data.length) {
+    c.innerHTML = '<div class="weather-card"><div class="weather-location">Veri yok</div><div class="weather-temp">--°</div></div>';
+    return;
   }
-  
   c.innerHTML = data.map(w => `
     <div class="weather-card">
-      <div class="weather-animation" id="anim-${w.location.replace(/[^a-zA-Z]/g, '')}"></div>
       <div class="weather-location">${w.location}</div>
       <div class="weather-icon">${w.current.icon || '🌤️'}</div>
-      <div class="weather-temp">${w.current.temp}°C</div>
+      <div class="weather-temp">${Math.round(w.current.temp)}°C</div>
       <div class="weather-desc">${w.current.description}</div>
-      <div class="weather-extra">
-        <span>💨 ${w.current.wind_speed || 0} km/h</span>
-        <span>💧 ${w.current.humidity || 0}%</span>
+      <div class="weather-details">
+        <span>💨 ${w.current.wind_speed} km/h</span>
+        <span>💧 ${w.current.humidity}%</span>
+      </div>
+      <div class="weather-forecast">
+        ${(w.forecast || []).slice(0,3).map(f => `
+          <div class="forecast-day">
+            <div class="forecast-icon">${f.icon || '🌤️'}</div>
+            <div>${f.temp_max}°/${f.temp_min}°</div>
+          </div>
+        `).join('')}
       </div>
     </div>
   `).join('');
-  
-  data.forEach(w => { 
-    const elId = 'anim-' + w.location.replace(/[^a-zA-Z]/g, '');
-    const el = document.getElementById(elId); 
-    if (el) createWeatherAnimation(el, w.current.main); 
-  });
 }
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 13: JS - RENDER MARKETPLACE
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - RENDER MARKETPLACE -->
 <script>
 function renderMarketplace(stats) {
   const c = document.getElementById('marketplaceStats');
@@ -504,15 +336,13 @@ function renderMarketplace(stats) {
 }
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 14: JS - RENDER TOP PRODUCTS
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - RENDER TOP PRODUCTS -->
 <script>
 function renderTopProducts(products) {
   const c = document.getElementById('topProducts');
-  if (!products || !products.length) { 
-    c.innerHTML = '<div class="product-item"><div class="product-rank">-</div><div class="product-info"><div class="product-name">Veri yok</div></div><div class="product-qty">0</div></div>'; 
-    return; 
+  if (!products || !products.length) {
+    c.innerHTML = '<div class="product-item"><div class="product-rank">-</div><div class="product-info"><div class="product-name">Veri yok</div></div><div class="product-qty">0</div></div>';
+    return;
   }
   const max = products[0]?.quantity || 1;
   c.innerHTML = products.map((p, i) => `
@@ -528,22 +358,19 @@ function renderTopProducts(products) {
 }
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 15: JS - RENDER LOGS (TERMINAL)
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - RENDER LOGS -->
 <script>
 function renderLogs(logs) {
   const c = document.getElementById('terminalContent');
-  if (!logs || !logs.length) { 
-    c.innerHTML = '<div class="log-line"><span class="log-time">--</span><span class="log-status info">BİLGİ</span><span class="log-message">Log yok</span></div>'; 
-    return; 
+  if (!logs || !logs.length) {
+    c.innerHTML = '<div class="log-line"><span class="log-time">--</span><span class="log-status info">BİLGİ</span><span class="log-message">Log yok</span></div>';
+    return;
   }
-  const cls = { 'BAŞARILI': 'success', 'HATA': 'error', 'YENİ': 'new', 'BAŞLADI': 'info', 'BİTTİ': 'info', 'INFO': 'info', 'UYARI': 'warning' };
   c.innerHTML = logs.map(l => `
     <div class="log-line">
       <span class="log-time">${l.timestamp || '--'}</span>
-      <span class="log-status ${cls[l.status] || 'info'}">${l.status || 'INFO'}</span>
-      <span class="log-message">${l.fileName || ''} → ${l.detail || ''}</span>
+      <span class="log-status ${({'BAŞARILI':'success','HATA':'error','YENİ':'new','BAŞLADI':'info','BİTTİ':'info','INFO':'info'})[l.status] || 'info'}">${l.status}</span>
+      <span class="log-message">${l.fileName ? l.fileName + ' → ' : ''}${l.detail || ''}</span>
     </div>
   `).join('');
 }
@@ -556,9 +383,7 @@ function renderTodayStats(t) {
 }
 </script>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 16: JS - API & ACTIONS
-═══════════════════════════════════════════════════════════════ -->
+<!-- JS - API & AUTO-REFRESH -->
 <script>
 function loadDashboard() {
   fetch('/api/dashboard')
@@ -570,6 +395,9 @@ function loadDashboard() {
         renderTopProducts(data.top_products);
         renderLogs(data.recent_logs);
         renderTodayStats(data.today);
+        // Son güncelleme saatini güncelle
+        document.getElementById('lastSync').textContent =
+          new Date().toLocaleTimeString('tr-TR');
       }
     })
     .catch(function(err) {
@@ -577,52 +405,12 @@ function loadDashboard() {
     });
 }
 
-function runAction(action) {
-  const btnMap = { 'run': 'btnRunAll', 'gmail': 'btnGmail', 'drive': 'btnDrive' };
-  const btn = document.getElementById(btnMap[action]);
-  const orig = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<div class="btn-spinner"></div><span>Çalışıyor...</span>';
-
-  fetch('/api/' + action, { method: 'POST' })
-    .then(function(res) { return res.json(); })
-    .then(function(result) {
-      btn.disabled = false;
-      btn.innerHTML = orig;
-      if (result && result.logs) {
-        result.logs.forEach(function(log) { addLog('BİLGİ', log); });
-      }
-      loadDashboard();
-    })
-    .catch(function(err) {
-      btn.disabled = false;
-      btn.innerHTML = orig;
-      addLog('HATA', err.message);
-    });
-}
-
-function addLog(status, message) {
-  const c = document.getElementById('terminalContent');
-  const now = new Date().toLocaleTimeString('tr-TR');
-  const cls = { 'BAŞARILI': 'success', 'HATA': 'error', 'YENİ': 'new', 'BAŞLADI': 'info', 'BİTTİ': 'info', 'BİLGİ': 'info' };
-  const line = document.createElement('div');
-  line.className = 'log-line';
-  line.innerHTML = `<span class="log-time">${now}</span><span class="log-status ${cls[status] || 'info'}">${status}</span><span class="log-message">${message}</span>`;
-  c.insertBefore(line, c.firstChild);
-  while (c.children.length > 50) c.removeChild(c.lastChild);
-}
-</script>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     BÖLÜM 17: JS - INIT
-═══════════════════════════════════════════════════════════════ -->
-<script>
-// Sayfa yüklendiğinde dashboard'u başlat
+// Sayfa yüklendiğinde
 loadDashboard();
-// 5 dakikada bir otomatik yenile
-setInterval(loadDashboard, 300000);
+
+// Her 30 saniyede dashboard verilerini otomatik yenile
+setInterval(loadDashboard, 30000);
 </script>
 
 </body>
 </html>
-
