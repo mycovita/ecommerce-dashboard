@@ -36,34 +36,27 @@ async function getGmail() {
   const gmailUser = process.env.GMAIL_USER;
   if (!gmailUser) throw new Error('GMAIL_USER env değişkeni ayarlanmamış');
   
-  // Service Account JSON key dosyası varsa onu kullan
-  const keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  // gmail-key.json dosyasını doğrudan oku
+  const path = require('path');
+  const fs = require('fs');
+  const keyPath = path.join(__dirname, '..', '..', 'gmail-key.json');
   
-  if (keyFile) {
-    // JSON key ile JWT auth - subject ile impersonation
-    const auth = new google.auth.JWT({
-      keyFile: keyFile,
-      scopes: [
-        'https://www.googleapis.com/auth/gmail.modify',
-        'https://www.googleapis.com/auth/gmail.labels',
-        'https://www.googleapis.com/auth/gmail.readonly'
-      ],
-      subject: gmailUser
-    });
-    return google.gmail({ version: 'v1', auth });
-  }
+  if (!fs.existsSync(keyPath)) throw new Error('gmail-key.json bulunamadı: ' + keyPath);
   
-  // Cloud Run default credentials ile dene
-  const auth = new google.auth.GoogleAuth({
+  const key = JSON.parse(fs.readFileSync(keyPath, 'utf8'));
+  
+  const auth = new google.auth.JWT({
+    email: key.client_email,
+    key: key.private_key,
     scopes: [
       'https://www.googleapis.com/auth/gmail.modify',
       'https://www.googleapis.com/auth/gmail.labels',
       'https://www.googleapis.com/auth/gmail.readonly'
-    ]
+    ],
+    subject: gmailUser
   });
-  const client = await auth.getClient();
-  client.subject = gmailUser;
-  return google.gmail({ version: 'v1', auth: client });
+  
+  return google.gmail({ version: 'v1', auth });
 }
 
 async function getAccessToken() {
