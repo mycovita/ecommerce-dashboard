@@ -1,416 +1,149 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🍄 MYCOVITA OS</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-/* RESET & VARIABLES */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --bg-primary: #0d0d0d;
-  --bg-secondary: #1a1a1a;
-  --bg-tertiary: #242424;
-  --text-primary: #ffffff;
-  --text-secondary: #9ca3af;
-  --accent-blue: #3b82f6;
-  --accent-green: #22c55e;
-  --accent-orange: #f97316;
-  --accent-red: #ef4444;
-  --accent-purple: #a855f7;
-  --terminal-green: #00ff41;
-}
-html, body { height: 100%; overflow: hidden; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  display: flex; flex-direction: column;
-}
-
-/* HEADER */
-.header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 20px; background: var(--bg-secondary);
-  border-bottom: 1px solid var(--bg-tertiary);
-}
-.logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
-.logo-icon { font-size: 22px; }
-.header-right { display: flex; align-items: center; gap: 16px; }
-.drive-link {
-  display: flex; align-items: center; gap: 6px;
-  text-decoration: none; color: var(--text-secondary);
-  font-size: 12px; padding: 4px 10px; border-radius: 6px;
-  background: var(--bg-tertiary); transition: all 0.2s;
-}
-.drive-link:hover { background: var(--accent-blue); color: white; }
-.drive-link svg { width: 16px; height: 16px; }
-.status-badge {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: var(--text-secondary);
-}
-.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: pulse 2s infinite; }
-.last-sync { font-weight: 700; font-size: 14px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-/* GRID */
-.main-container {
-  flex: 1; padding: 12px; overflow: auto;
-  display: grid;
-  grid-template-columns: 1fr 1.2fr 1fr;
-  grid-template-rows: auto 1fr auto;
-  gap: 12px;
-}
-
-/* WIDGETS */
-.widget {
-  background: var(--bg-secondary); border-radius: 12px;
-  display: flex; flex-direction: column; overflow: hidden;
-  border: 1px solid var(--bg-tertiary);
-}
-.widget-header { height: 3px; flex-shrink: 0; }
-.widget-content {
-  padding: 12px; flex: 1; display: flex;
-  flex-direction: column; gap: 8px; overflow: auto;
-}
-.widget-title {
-  font-size: 11px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 1px; color: var(--text-secondary);
-}
-
-/* WEATHER */
-.weather-header { background: var(--accent-blue); }
-.weather-cards { display: flex; gap: 8px; flex: 1; }
-.weather-card {
-  flex: 1; background: var(--bg-tertiary); border-radius: 8px; padding: 10px;
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-}
-.weather-location { font-size: 12px; font-weight: 600; }
-.weather-icon { font-size: 28px; }
-.weather-temp { font-size: 24px; font-weight: 700; }
-.weather-desc { font-size: 10px; color: var(--text-secondary); }
-.weather-details { font-size: 9px; color: var(--text-secondary); display: flex; gap: 8px; }
-.weather-forecast { display: flex; gap: 4px; margin-top: 4px; }
-.forecast-day {
-  background: rgba(255,255,255,0.05); border-radius: 4px; padding: 3px 5px;
-  font-size: 8px; text-align: center; flex: 1;
-}
-.forecast-icon { font-size: 12px; }
-
-/* MARKETPLACE */
-.marketplace-header { background: var(--accent-orange); }
-.marketplace-content { justify-content: space-between; }
-.marketplace-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
-.marketplace-icon {
-  width: 24px; height: 24px; border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: white;
-}
-.mp-trendyol { background: #f27a1a; }
-.mp-hepsiburada { background: #ff6000; }
-.mp-amazon { background: #ff9900; }
-.mp-mycovita { background: var(--accent-green); }
-.marketplace-name { font-size: 12px; width: 80px; }
-.marketplace-bar-container { flex: 1; height: 6px; background: var(--bg-tertiary); border-radius: 3px; }
-.marketplace-bar-fill { height: 100%; background: var(--accent-orange); border-radius: 3px; transition: width 0.5s; }
-.marketplace-stats { display: flex; flex-direction: column; align-items: flex-end; }
-.marketplace-count { font-size: 12px; font-weight: 600; }
-.marketplace-revenue { font-size: 9px; color: var(--text-secondary); }
-.marketplace-total { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--bg-tertiary); padding-top: 6px; margin-top: auto; }
-.total-label { font-size: 10px; font-weight: 600; color: var(--text-secondary); }
-.total-value { font-size: 13px; font-weight: 700; color: var(--accent-green); }
-.total-usd { font-size: 10px; color: var(--text-secondary); margin-left: 6px; }
-
-/* TERMINAL */
-.terminal { grid-column: span 2; }
-.terminal-header { background: var(--terminal-green); }
-.terminal-box {
-  font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  flex: 1; overflow-y: auto; max-height: 250px;
-}
-.log-line { display: flex; gap: 8px; padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
-.log-time { color: var(--text-secondary); min-width: 130px; font-size: 10px; }
-.log-status { font-weight: 600; min-width: 70px; font-size: 10px; }
-.log-status.success { color: var(--accent-green); }
-.log-status.error { color: var(--accent-red); }
-.log-status.info { color: var(--accent-blue); }
-.log-status.new { color: var(--accent-orange); }
-.log-message { color: var(--text-secondary); font-size: 10px; }
-
-/* TOP PRODUCTS */
-.products-header { background: var(--accent-purple); }
-.product-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; }
-.product-rank {
-  width: 22px; height: 22px; border-radius: 50%; display: flex;
-  align-items: center; justify-content: center; font-size: 10px;
-  font-weight: 700; background: var(--bg-tertiary); color: var(--text-secondary);
-}
-.product-rank.gold { background: #fbbf24; color: #000; }
-.product-rank.silver { background: #9ca3af; color: #000; }
-.product-rank.bronze { background: #d97706; color: #000; }
-.product-info { flex: 1; }
-.product-name { font-size: 11px; font-weight: 500; }
-.product-bar { height: 3px; background: var(--bg-tertiary); border-radius: 2px; margin-top: 3px; }
-.product-bar-fill { height: 100%; background: var(--accent-purple); border-radius: 2px; }
-.product-qty { font-size: 13px; font-weight: 700; }
-
-/* STATUS BAR */
-.status-bar {
-  grid-column: span 3;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-}
-.stat-card {
-  background: var(--bg-tertiary); border-radius: 8px; padding: 10px;
-  text-align: center;
-}
-.stat-value { font-size: 22px; font-weight: 700; }
-.stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
-
-/* RESPONSIVE */
-@media (max-width: 1200px) {
-  .main-container { grid-template-columns: 1fr 1fr; }
-  .terminal, .status-bar { grid-column: span 2; }
-}
-@media (max-width: 768px) {
-  .main-container { grid-template-columns: 1fr; grid-template-rows: auto; }
-  .terminal, .status-bar { grid-column: span 1; }
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 2px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYCOVITA Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #f4f6f9; }
+        .sidebar { min-height: 100vh; background: #2c3e50; color: white; }
+        .nav-link { color: rgba(255,255,255,.8); margin-bottom: 5px; }
+        .nav-link:hover { color: #fff; background: rgba(255,255,255,.1); border-radius: 5px; }
+        .card { border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        .stats-icon { font-size: 2rem; opacity: 0.8; }
+    </style>
 </head>
-
 <body>
-  <header class="header">
-    <div class="logo">
-      <span class="logo-icon">🍄</span>
-      <span>MYCOVITA OS</span>
-    </div>
-    <div class="header-right">
-      <a href="https://drive.google.com/drive/folders/1UV05t1UA4_eNB-ZhEgvQZp80ILmeKdsy" target="_blank" class="drive-link">
-        <svg viewBox="0 0 87.3 78" fill="currentColor"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H1.05c0 1.6.4 3.15 1.2 4.55l4.35 9.3z"/><path d="M43.65 25.15L29.9 1.35c-1.35.8-2.5 1.9-3.3 3.3L1.2 52.7c-.8 1.4-1.2 2.95-1.2 4.55h27.5l16.15-32.1z"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75L86.1 57.25c.8-1.4 1.2-2.95 1.2-4.55H59.85L43.65 25.15 29.9 52.7h27.5l16.15 24.1z"/></svg>
-      </a>
-      <div class="status-badge">
-        <div class="status-dot"></div>
-        <span>Çevrimiçi</span>
-        <span class="last-sync" id="lastSync">--:--:--</span>
-      </div>
-    </div>
-  </header>
 
-  <main class="main-container">
-    <!-- WEATHER -->
-    <div class="widget">
-      <div class="widget-header weather-header"></div>
-      <div class="widget-content">
-        <div class="widget-title">🌤️ Hava Durumu</div>
-        <div class="weather-cards" id="weatherCards">
-          <div class="weather-card"><div class="weather-location">Yükleniyor...</div><div class="weather-icon">⏳</div><div class="weather-temp">--°</div></div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 sidebar p-3 d-none d-md-block">
+            <h4 class="text-center mb-4"><i class="fas fa-leaf"></i> MYCOVITA</h4>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-home me-2"></i> Ana Sayfa</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i> Siparişler</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-box me-2"></i> Ürünler</a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-users me-2"></i> Müşteriler</a></li>
+                <li class="nav-item mt-4"><a class="nav-link text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Çıkış</a></li>
+            </ul>
         </div>
-      </div>
-    </div>
 
-    <!-- MARKETPLACE -->
-    <div class="widget">
-      <div class="widget-header marketplace-header"></div>
-      <div class="widget-content marketplace-content">
-        <div class="widget-title">📊 Pazar Yeri (Bu Ay)</div>
-        <div class="marketplace-bars" id="marketplaceStats"></div>
-        <div class="marketplace-total">
-          <span class="total-label">TOPLAM</span>
-          <div>
-            <span class="total-value" id="totalOrders">0</span>
-            <span class="total-usd" id="totalRevenue">₺0 | $0</span>
-          </div>
+        <div class="col-md-9 col-lg-10 p-4">
+            <h2 class="mb-4">Genel Bakış</h2>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>Toplam Satış</h6>
+                                <h3>₺24,500</h3>
+                            </div>
+                            <i class="fas fa-wallet stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-success text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>Yeni Sipariş</h6>
+                                <h3>12</h3>
+                            </div>
+                            <i class="fas fa-shopping-bag stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-warning text-dark p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>Bekleyen</h6>
+                                <h3>5</h3>
+                            </div>
+                            <i class="fas fa-clock stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6>Müşteriler</h6>
+                                <h3>1,204</h3>
+                            </div>
+                            <i class="fas fa-user-plus stats-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-3">
+                <h5 class="mb-3">Son Siparişler</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>#ID</th>
+                                <th>Müşteri</th>
+                                <th>Tarih</th>
+                                <th>Durum</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1023</td>
+                                <td>Ahmet Yılmaz</td>
+                                <td>13 Şub 2026</td>
+                                <td><span class="badge bg-success">Tamamlandı</span></td>
+                                <td>₺450.00</td>
+                            </tr>
+                            <tr>
+                                <td>#1024</td>
+                                <td>Ayşe Demir</td>
+                                <td>13 Şub 2026</td>
+                                <td><span class="badge bg-warning text-dark">Hazırlanıyor</span></td>
+                                <td>₺1,200.00</td>
+                            </tr>
+                            <tr>
+                                <td>#1025</td>
+                                <td>Mehmet Kaya</td>
+                                <td>12 Şub 2026</td>
+                                <td><span class="badge bg-primary">Kargoda</span></td>
+                                <td>₺320.50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-    <!-- TOP PRODUCTS -->
-    <div class="widget">
-      <div class="widget-header products-header"></div>
-      <div class="widget-content">
-        <div class="widget-title">🏆 En Çok Satanlar</div>
-        <div class="products-list" id="topProducts">
-          <div class="product-item"><div class="product-rank">-</div><div class="product-info"><div class="product-name">Yükleniyor...</div></div><div class="product-qty">0</div></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- TERMINAL -->
-    <div class="widget terminal">
-      <div class="widget-header terminal-header"></div>
-      <div class="widget-content">
-        <div class="widget-title">💻 Terminal</div>
-        <div class="terminal-box" id="terminalContent">
-          <div class="log-line"><span class="log-time">--:--:--</span><span class="log-status info">BAŞLATILIYOR</span><span class="log-message">Sistem yükleniyor...</span></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- STATUS BAR -->
-    <div class="status-bar">
-      <div class="stat-card"><div class="stat-value" id="todayOrders">0</div><div class="stat-label">Bugün Sipariş</div></div>
-      <div class="stat-card"><div class="stat-value" id="todayFiles">0</div><div class="stat-label">Dosya İşlendi</div></div>
-      <div class="stat-card"><div class="stat-value" id="todayMails">0</div><div class="stat-label">Mail</div></div>
-      <div class="stat-card"><div class="stat-value" id="todayErrors" style="color:var(--accent-red)">0</div><div class="stat-label">Hata</div></div>
-    </div>
-  </main>
+cat <<EOF > src/app.js
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = process.env.PORT || 8080;
 
-<!-- JS - WEATHER ANIMATIONS -->
-<script>
-function createSnow(el) {
-  el.innerHTML = '';
-  for (let i = 0; i < 12; i++) {
-    const f = document.createElement('div');
-    f.style.cssText = 'position:absolute;color:white;font-size:' + (6+Math.random()*8) + 'px;left:' + Math.random()*100 + '%;top:-10px;animation:snowFall ' + (2+Math.random()*3) + 's linear infinite;animation-delay:' + Math.random()*3 + 's;opacity:' + (0.4+Math.random()*0.6);
-    f.textContent = '❄';
-    el.appendChild(f);
-  }
-}
-</script>
+// Statik dosyaları (HTML, CSS, JS) sun
+app.use(express.static(path.join(__dirname, '../public')));
 
-<!-- JS - RENDER WEATHER -->
-<script>
-function renderWeather(data) {
-  const c = document.getElementById('weatherCards');
-  if (!data || !data.length) {
-    c.innerHTML = '<div class="weather-card"><div class="weather-location">Veri yok</div><div class="weather-temp">--°</div></div>';
-    return;
-  }
-  c.innerHTML = data.map(w => `
-    <div class="weather-card">
-      <div class="weather-location">${w.location}</div>
-      <div class="weather-icon">${w.current.icon || '🌤️'}</div>
-      <div class="weather-temp">${Math.round(w.current.temp)}°C</div>
-      <div class="weather-desc">${w.current.description}</div>
-      <div class="weather-details">
-        <span>💨 ${w.current.wind_speed} km/h</span>
-        <span>💧 ${w.current.humidity}%</span>
-      </div>
-      <div class="weather-forecast">
-        ${(w.forecast || []).slice(0,3).map(f => `
-          <div class="forecast-day">
-            <div class="forecast-icon">${f.icon || '🌤️'}</div>
-            <div>${f.temp_max}°/${f.temp_min}°</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-}
-</script>
+// Ana sayfa rotası
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
+});
 
-<!-- JS - RENDER MARKETPLACE -->
-<script>
-function renderMarketplace(stats) {
-  const c = document.getElementById('marketplaceStats');
-  const mps = [
-    { key: 'TRENDYOL', name: 'Trendyol', cls: 'mp-trendyol', icon: 'T' },
-    { key: 'HEPSIBURADA', name: 'Hepsiburada', cls: 'mp-hepsiburada', icon: 'H' },
-    { key: 'AMAZON_TR', name: 'Amazon TR', cls: 'mp-amazon', icon: 'A' },
-    { key: 'MYCOVITA', name: 'Mycovita', cls: 'mp-mycovita', icon: '🍄' }
-  ];
-  const max = Math.max(...mps.map(m => stats.marketplaces[m.key]?.orders || 0), 1);
-  c.innerHTML = mps.map(m => {
-    const d = stats.marketplaces[m.key] || { orders: 0, revenue_tl: 0 };
-    return `
-      <div class="marketplace-row">
-        <div class="marketplace-icon ${m.cls}">${m.icon}</div>
-        <div class="marketplace-name">${m.name}</div>
-        <div class="marketplace-bar-container"><div class="marketplace-bar-fill" style="width:${(d.orders/max)*100}%"></div></div>
-        <div class="marketplace-stats">
-          <div class="marketplace-count">${d.orders}</div>
-          <div class="marketplace-revenue">₺${d.revenue_tl.toLocaleString('tr-TR')}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
-  document.getElementById('totalOrders').textContent = stats.total.orders + ' sipariş';
-  document.getElementById('totalRevenue').textContent = `₺${stats.total.revenue_tl.toLocaleString('tr-TR')} | $${stats.total.revenue_usd.toLocaleString('en-US')}`;
-}
-</script>
+// API Test Rotası
+app.get('/api/status', (req, res) => {
+    res.json({ status: 'active', message: 'Mycovita API Çalışıyor', version: '2.0.1' });
+});
 
-<!-- JS - RENDER TOP PRODUCTS -->
-<script>
-function renderTopProducts(products) {
-  const c = document.getElementById('topProducts');
-  if (!products || !products.length) {
-    c.innerHTML = '<div class="product-item"><div class="product-rank">-</div><div class="product-info"><div class="product-name">Veri yok</div></div><div class="product-qty">0</div></div>';
-    return;
-  }
-  const max = products[0]?.quantity || 1;
-  c.innerHTML = products.map((p, i) => `
-    <div class="product-item">
-      <div class="product-rank ${i===0?'gold':i===1?'silver':i===2?'bronze':''}">${i + 1}</div>
-      <div class="product-info">
-        <div class="product-name">${p.product_name}</div>
-        <div class="product-bar"><div class="product-bar-fill" style="width:${(p.quantity/max)*100}%"></div></div>
-      </div>
-      <div class="product-qty">${p.quantity}</div>
-    </div>
-  `).join('');
-}
-</script>
-
-<!-- JS - RENDER LOGS -->
-<script>
-function renderLogs(logs) {
-  const c = document.getElementById('terminalContent');
-  if (!logs || !logs.length) {
-    c.innerHTML = '<div class="log-line"><span class="log-time">--</span><span class="log-status info">BİLGİ</span><span class="log-message">Log yok</span></div>';
-    return;
-  }
-  c.innerHTML = logs.map(l => `
-    <div class="log-line">
-      <span class="log-time">${l.timestamp || '--'}</span>
-      <span class="log-status ${({'BAŞARILI':'success','HATA':'error','YENİ':'new','BAŞLADI':'info','BİTTİ':'info','INFO':'info'})[l.status] || 'info'}">${l.status}</span>
-      <span class="log-message">${l.fileName ? l.fileName + ' → ' : ''}${l.detail || ''}</span>
-    </div>
-  `).join('');
-}
-
-function renderTodayStats(t) {
-  document.getElementById('todayOrders').textContent = t?.orders || 0;
-  document.getElementById('todayFiles').textContent = t?.files || 0;
-  document.getElementById('todayMails').textContent = t?.mails || 0;
-  document.getElementById('todayErrors').textContent = t?.errors || 0;
-}
-</script>
-
-<!-- JS - API & AUTO-REFRESH -->
-<script>
-function loadDashboard() {
-  fetch('/api/dashboard')
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-      if (data) {
-        renderWeather(data.weather);
-        renderMarketplace(data.marketplace);
-        renderTopProducts(data.top_products);
-        renderLogs(data.recent_logs);
-        renderTodayStats(data.today);
-        // Son güncelleme saatini güncelle
-        document.getElementById('lastSync').textContent =
-          new Date().toLocaleTimeString('tr-TR');
-      }
-    })
-    .catch(function(err) {
-      console.error('Dashboard yükleme hatası:', err);
-    });
-}
-
-// Sayfa yüklendiğinde
-loadDashboard();
-
-// Her 30 saniyede dashboard verilerini otomatik yenile
-setInterval(loadDashboard, 30000);
-</script>
-
-</body>
-</html>
+app.listen(port, () => {
+    console.log(`MYCOVITA Sunucusu ${port} portunda çalışıyor`);
+});
