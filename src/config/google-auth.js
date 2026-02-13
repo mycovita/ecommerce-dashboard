@@ -34,15 +34,30 @@ async function getSheets() {
 
 async function getGmail() {
   const gmailUser = process.env.GMAIL_USER;
+  if (!gmailUser) throw new Error('GMAIL_USER env değişkeni ayarlanmamış');
+  
   const auth = new google.auth.GoogleAuth({
     scopes: [
       'https://www.googleapis.com/auth/gmail.modify',
       'https://www.googleapis.com/auth/gmail.labels',
       'https://www.googleapis.com/auth/gmail.readonly'
-    ],
-    clientOptions: gmailUser ? { subject: gmailUser } : undefined
+    ]
   });
-  return google.gmail({ version: 'v1', auth });
+  
+  const client = await auth.getClient();
+  // Domain-Wide Delegation: kullanıcı adına impersonate et
+  const impersonatedClient = new google.auth.Impersonated({
+    sourceClient: client,
+    targetPrincipal: gmailUser,
+    targetScopes: [
+      'https://www.googleapis.com/auth/gmail.modify',
+      'https://www.googleapis.com/auth/gmail.labels',
+      'https://www.googleapis.com/auth/gmail.readonly'
+    ],
+    lifetime: 3600
+  });
+  
+  return google.gmail({ version: 'v1', auth: impersonatedClient });
 }
 
 async function getAccessToken() {
