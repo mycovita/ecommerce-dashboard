@@ -67,3 +67,4 @@ app.listen(config.port, () => {
   // Sonra her 15 dakikada tekrarla
   setInterval(cronScan, 15 * 60 * 1000);
 });
+console.log('Gemini Otomasyon Testi: BAŞARILI');
