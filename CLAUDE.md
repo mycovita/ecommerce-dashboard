@@ -1,24 +1,29 @@
-Project: Ecommerce Dashboard (Node.js + Express)
+# Project Instructions for Claude
 
-Stack:
+Project: ecommerce-dashboard
+Tech Stack:
 - Node.js
 - Express
 - HTML Dashboard
-- Google Gmail API
-- Google Drive API
+- JavaScript (ES6+)
+
+Priorities:
+- Performance
+- Security
+- Maintainability
+
+App Structure:
+- src/app.js          → main server
+- src/routes/         → route handlers
+- src/services/       → business logic
+- public/             → dashboard UI
 
 Rules:
-- Respond concisely.
-- Do not explain unless asked.
-- Show minimal diffs for code edits.
-- Prefer incremental changes.
-- Ask before large refactors.
-- Assume JavaScript (ES6).
-
-Architecture:
-- Routes handle HTTP
-- Services handle business logic
-- No framework changes unless requested
-
-Goal:
-Maintain simple, fast, readable backend with minimal complexity.
+- Analyze only files I specify.
+- Do NOT scan entire repository.
+- Show minimal diff when editing.
+- Only show changed lines / patch style.
+- Ask before large output or refactor.
+- Do NOT rewrite entire UI.
+- Do NOT convert JS to TS.
+- Do NOT add new dependencies without confirmation.
