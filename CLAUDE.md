@@ -1,18 +1,24 @@
-# Project Instructions for Claude
+Project: Ecommerce Dashboard (Node.js + Express)
 
-Project: ecommerce-dashboard
-
-Priorities:
-- Performance
-- Security
-- Maintainability
+Stack:
+- Node.js
+- Express
+- HTML Dashboard
+- Google Gmail API
+- Google Drive API
 
 Rules:
-- Analyze only files I specify.
-- Do NOT scan entire repository.
-- Show minimal diff when editing.
-- No refactoring unless requested.
-  
-## Claude Instructions (Token Saver)
-- Default short responses
-- Ask confirmation before large outputs
+- Respond concisely.
+- Do not explain unless asked.
+- Show minimal diffs for code edits.
+- Prefer incremental changes.
+- Ask before large refactors.
+- Assume JavaScript (ES6).
+
+Architecture:
+- Routes handle HTTP
+- Services handle business logic
+- No framework changes unless requested
+
+Goal:
+Maintain simple, fast, readable backend with minimal complexity.
