@@ -2,6 +2,7 @@
  * 🍄 MYCOVITA OS v2.0 - GOOGLE AUTH
  * Google API'leri için kimlik doğrulama
  * Cloud Run'da otomatik service account kullanır
+ * Gmail için Domain-Wide Delegation ile kullanıcı adına erişir
  */
 
 const { google } = require('googleapis');
@@ -14,9 +15,6 @@ async function getAuth() {
     scopes: [
       'https://www.googleapis.com/auth/drive',
       'https://www.googleapis.com/auth/spreadsheets',
-      'https://www.googleapis.com/auth/gmail.modify',
-      'https://www.googleapis.com/auth/gmail.labels',
-      'https://www.googleapis.com/auth/gmail.readonly',
       'https://www.googleapis.com/auth/cloud-platform',
       'https://www.googleapis.com/auth/documents'
     ]
@@ -35,7 +33,15 @@ async function getSheets() {
 }
 
 async function getGmail() {
-  const auth = await getAuth();
+  const gmailUser = process.env.GMAIL_USER;
+  const auth = new google.auth.GoogleAuth({
+    scopes: [
+      'https://www.googleapis.com/auth/gmail.modify',
+      'https://www.googleapis.com/auth/gmail.labels',
+      'https://www.googleapis.com/auth/gmail.readonly'
+    ],
+    clientOptions: gmailUser ? { subject: gmailUser } : undefined
+  });
   return google.gmail({ version: 'v1', auth });
 }
 
