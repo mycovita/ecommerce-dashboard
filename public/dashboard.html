@@ -3,147 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MYCOVITA Yönetim Paneli</title>
+    <title>MYCOVITA Canlı Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #f4f6f9; }
         .sidebar { min-height: 100vh; background: #2c3e50; color: white; }
-        .nav-link { color: rgba(255,255,255,.8); margin-bottom: 5px; }
-        .nav-link:hover { color: #fff; background: rgba(255,255,255,.1); border-radius: 5px; }
-        .card { border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
-        .card:hover { transform: translateY(-5px); }
-        .stats-icon { font-size: 2rem; opacity: 0.8; }
+        .card { border: none; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 col-lg-2 sidebar p-3 d-none d-md-block">
+        <div class="col-md-2 sidebar p-3 d-none d-md-block">
             <h4 class="text-center mb-4"><i class="fas fa-leaf"></i> MYCOVITA</h4>
-            <ul class="nav flex-column">
-                <li class="nav-item"><a class="nav-link active" href="#"><i class="fas fa-home me-2"></i> Ana Sayfa</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i> Siparişler</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-box me-2"></i> Ürünler</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-users me-2"></i> Müşteriler</a></li>
-                <li class="nav-item mt-4"><a class="nav-link text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Çıkış</a></li>
-            </ul>
+            <p class="text-white-50 text-center">Canlı Veri Modu</p>
         </div>
 
-        <div class="col-md-9 col-lg-10 p-4">
-            <h2 class="mb-4">Genel Bakış</h2>
+        <div class="col-md-10 p-4">
+            <div class="d-flex justify-content-between mb-4">
+                <h2>Genel Bakış</h2>
+                <button onclick="fetchData()" class="btn btn-primary"><i class="fas fa-sync-alt"></i> Yenile</button>
+            </div>
             
             <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card bg-primary text-white p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6>Toplam Satış</h6>
-                                <h3>₺24,500</h3>
-                            </div>
-                            <i class="fas fa-wallet stats-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card bg-success text-white p-3">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between">
                             <div>
-                                <h6>Yeni Sipariş</h6>
-                                <h3>12</h3>
+                                <h6>Toplam Ciro</h6>
+                                <h3 id="totalRevenue">₺0</h3>
                             </div>
-                            <i class="fas fa-shopping-bag stats-icon"></i>
+                            <i class="fas fa-wallet fa-2x opacity-50"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white p-3">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6>Toplam Sipariş</h6>
+                                <h3 id="totalOrders">0</h3>
+                            </div>
+                            <i class="fas fa-shopping-bag fa-2x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <div class="card bg-warning text-dark p-3">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between">
                             <div>
                                 <h6>Bekleyen</h6>
-                                <h3>5</h3>
+                                <h3 id="pendingOrders">0</h3>
                             </div>
-                            <i class="fas fa-clock stats-icon"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card bg-info text-white p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6>Müşteriler</h6>
-                                <h3>1,204</h3>
-                            </div>
-                            <i class="fas fa-user-plus stats-icon"></i>
+                            <i class="fas fa-clock fa-2x opacity-50"></i>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="card p-3">
-                <h5 class="mb-3">Son Siparişler</h5>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-light">
-                            <tr>
-                                <th>#ID</th>
-                                <th>Müşteri</th>
-                                <th>Tarih</th>
-                                <th>Durum</th>
-                                <th>Tutar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1023</td>
-                                <td>Ahmet Yılmaz</td>
-                                <td>13 Şub 2026</td>
-                                <td><span class="badge bg-success">Tamamlandı</span></td>
-                                <td>₺450.00</td>
-                            </tr>
-                            <tr>
-                                <td>#1024</td>
-                                <td>Ayşe Demir</td>
-                                <td>13 Şub 2026</td>
-                                <td><span class="badge bg-warning text-dark">Hazırlanıyor</span></td>
-                                <td>₺1,200.00</td>
-                            </tr>
-                            <tr>
-                                <td>#1025</td>
-                                <td>Mehmet Kaya</td>
-                                <td>12 Şub 2026</td>
-                                <td><span class="badge bg-primary">Kargoda</span></td>
-                                <td>₺320.50</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <h5 class="mb-3">Son Siparişler (Google Sheets)</h5>
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tarih</th>
+                            <th>Müşteri</th>
+                            <th>Ürün</th>
+                            <th>Durum</th>
+                            <th>Tutar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTable">
+                        <tr><td colspan="5" class="text-center">Veriler yükleniyor...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
+<script>
+    async function fetchData() {
+        try {
+            const response = await fetch('/api/orders');
+            const data = await response.json();
 
+            // Kartları Güncelle
+            document.getElementById('totalRevenue').innerText = '₺' + data.totalRevenue.toLocaleString('tr-TR');
+            document.getElementById('totalOrders').innerText = data.totalOrders;
+            document.getElementById('pendingOrders').innerText = data.pendingOrders;
 
-cat <<EOF > src/app.js
-const express = require('express');
-const path = require('path');
-const app = express();
-const port = process.env.PORT || 8080;
+            // Tabloyu Güncelle
+            const tbody = document.getElementById('orderTable');
+            tbody.innerHTML = '';
+            
+            data.orders.forEach(order => {
+                let badgeClass = 'bg-secondary';
+                if(order.durum === 'Tamamlandı') badgeClass = 'bg-success';
+                if(order.durum === 'Bekliyor') badgeClass = 'bg-warning text-dark';
+                if(order.durum === 'Kargoda') badgeClass = 'bg-primary';
 
-// Statik dosyaları (HTML, CSS, JS) sun
-app.use(express.static(path.join(__dirname, '../public')));
+                const row = `
+                    <tr>
+                        <td>${order.tarih}</td>
+                        <td>${order.musteri}</td>
+                        <td>${order.urun}</td>
+                        <td><span class="badge ${badgeClass}">${order.durum}</span></td>
+                        <td>₺${order.tutar}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        } catch (error) {
+            console.error(error);
+            document.getElementById('orderTable').innerHTML = '<tr><td colspan="5" class="text-danger text-center">Veri çekilemedi! Robotu tabloya ekledin mi?</td></tr>';
+        }
+    }
 
-// Ana sayfa rotası
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/dashboard.html'));
-});
-
-// API Test Rotası
-app.get('/api/status', (req, res) => {
-    res.json({ status: 'active', message: 'Mycovita API Çalışıyor', version: '2.0.1' });
-});
-
-app.listen(port, () => {
-    console.log(`MYCOVITA Sunucusu ${port} portunda çalışıyor`);
-});
+    // Sayfa açılınca verileri çek
+    fetchData();
+</script>
+</body>
+</html>
