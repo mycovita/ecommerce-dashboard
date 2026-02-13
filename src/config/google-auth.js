@@ -36,6 +36,24 @@ async function getGmail() {
   const gmailUser = process.env.GMAIL_USER;
   if (!gmailUser) throw new Error('GMAIL_USER env değişkeni ayarlanmamış');
   
+  // Service Account JSON key dosyası varsa onu kullan
+  const keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  
+  if (keyFile) {
+    // JSON key ile JWT auth - subject ile impersonation
+    const auth = new google.auth.JWT({
+      keyFile: keyFile,
+      scopes: [
+        'https://www.googleapis.com/auth/gmail.modify',
+        'https://www.googleapis.com/auth/gmail.labels',
+        'https://www.googleapis.com/auth/gmail.readonly'
+      ],
+      subject: gmailUser
+    });
+    return google.gmail({ version: 'v1', auth });
+  }
+  
+  // Cloud Run default credentials ile dene
   const auth = new google.auth.GoogleAuth({
     scopes: [
       'https://www.googleapis.com/auth/gmail.modify',
@@ -43,21 +61,9 @@ async function getGmail() {
       'https://www.googleapis.com/auth/gmail.readonly'
     ]
   });
-  
   const client = await auth.getClient();
-  // Domain-Wide Delegation: kullanıcı adına impersonate et
-  const impersonatedClient = new google.auth.Impersonated({
-    sourceClient: client,
-    targetPrincipal: gmailUser,
-    targetScopes: [
-      'https://www.googleapis.com/auth/gmail.modify',
-      'https://www.googleapis.com/auth/gmail.labels',
-      'https://www.googleapis.com/auth/gmail.readonly'
-    ],
-    lifetime: 3600
-  });
-  
-  return google.gmail({ version: 'v1', auth: impersonatedClient });
+  client.subject = gmailUser;
+  return google.gmail({ version: 'v1', auth: client });
 }
 
 async function getAccessToken() {
