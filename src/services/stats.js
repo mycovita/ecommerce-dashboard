@@ -12,24 +12,33 @@ const LogService = require('./log');
 async function getDashboardData() {
   const ts = new Date().toLocaleString('tr-TR', { timeZone: config.timezone });
 
-  const [weather, usdRate, marketplace, topProducts, recentLogs] = await Promise.all([
-    WeatherService.getAllLocations(),
-    CurrencyService.getUSDRate(),
-    MarketplaceService.getMonthlyStats(),
-    MarketplaceService.getTopProducts(5),
-    LogService.getRecent(50)
-  ]);
+  try {
+    const [weather, usdRate, marketplace, topProducts, recentLogs] = await Promise.all([
+      WeatherService.getAllLocations().catch(() => []),
+      CurrencyService.getUSDRate().catch(() => 0),
+      MarketplaceService.getMonthlyStats().catch(() => ({ marketplaces: {}, total: { orders: 0, revenue_tl: 0, revenue_usd: 0 } })),
+      MarketplaceService.getTopProducts(5).catch(() => []),
+      LogService.getRecent(50).catch(() => [])
+    ]);
 
-  return {
-    timestamp: ts,
-    system_status: 'ONLINE',
-    weather,
-    currency: { usd_try: usdRate },
-    marketplace,
-    top_products: topProducts,
-    recent_logs: recentLogs,
-    today: getTodayStats(recentLogs)
-  };
+    return {
+      timestamp: ts,
+      system_status: 'ONLINE',
+      weather,
+      currency: { usd_try: usdRate },
+      marketplace,
+      top_products: topProducts,
+      recent_logs: recentLogs,
+      today: getTodayStats(recentLogs)
+    };
+  } catch (e) {
+    console.error('Dashboard veri hatası:', e.message);
+    return {
+      timestamp: ts, system_status: 'ERROR', weather: [], currency: { usd_try: 0 },
+      marketplace: { marketplaces: {}, total: { orders: 0, revenue_tl: 0, revenue_usd: 0 } },
+      top_products: [], recent_logs: [], today: { orders: 0, files: 0, errors: 0, mails: 0, date: '-' }
+    };
+  }
 }
 
 function getTodayStats(logs) {
